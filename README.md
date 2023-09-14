@@ -21,7 +21,7 @@ To Publish your slides, click 'file --> Share --> Publish to web'
 
 ### Turn on WebSocket Server in OBS
 
-### Download this app
+### [Download this app](https://github.com/UUoocl/Transparent-Google-Slides/releases/tag/0.0.1-alpha)
 
 
 

@@ -1,0 +1,16 @@
+{
+  "name": "Google-Slides",
+  "productName": "Google-Slides",
+  "description": "My Electron application description",
+  "keywords": [],
+  "main": "./main.js",
+  "version": "1.0.0",
+  "author": "UUoocl",
+  "scripts": {
+    "start": "electron ."
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "electron": "26.0.0"
+  }
+}

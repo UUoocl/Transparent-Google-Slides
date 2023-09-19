@@ -1,20 +1,23 @@
+
 <!DOCTYPE html>
 <html>
   <head>
     <meta charset="UTF-8">
     <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'">
-    <title>Hello World!</title>
+    <title>Transparent Google Slides Player</title>
   </head>
   <body>
+    <h3><label for="Link">Enter a Published Google Slide Link:</label></h3>
+    <input type="text" id="Link" name="Link" size=150 value="https://docs.google.com/presentation/d/e/2PACX-1vRVpsaZJbgTiremeDpWaIW3M2gt0rmSj4bf_ymuH5panELG2cZcL1dwwaKhA6jNjIMozaUBBx1sZ5gQ/pub?start=false&loop=false&delayms=3000"/><br><br>
+    
+<h4>Connect to OBS WebSocket Server? (optional)</h4>
     <label for="IP">Enter IP address or "localhost":</label>
     <input type="text" id="IP" name="IP" value="localhost"/><br>
     <label for="Port">Enter Port Number:</label>
     <input type="text" id="Port" name="Port" value="4455"/><br>
     <label for="PW">Enter Password:</label>
-    <input type="text" id="PW" name="PW" value="K2BlGQBPt4EVW0Sj"/><br>
-    <label for="Link">Enter Google Slided Link:</label>
-    <input type="text" id="Link" name="Link" size=150 value="https://docs.google.com/presentation/d/e/2PACX-1vRoxsIfM8vFxFQFLeiFfEeiJvB6ZC0z9c2pXpfXw3JckgmC0xqmNRxUU_Jrb-Gx-qZfXuxLnZqPtR9X/pub?start=false&loop=false&delayms=3000"/><br>
+    <input type="text" id="PW" name="PW" value="YourPasswordGoesHere"/><br>
     <input type="button" id="SubmitButton" value="submit"/>
     <script src="./renderer.js"></script>
   </body>

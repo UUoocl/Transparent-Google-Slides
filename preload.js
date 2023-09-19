@@ -1,6 +1,7 @@
 const { contextBridge, ipcRenderer } = require('electron')
+var windowId;
 
 contextBridge.exposeInMainWorld('electronAPI', {
-  setTitle: (title) => ipcRenderer.send('set-title', title),
-  openNewWindow: (IP, Port, PW, Link) => ipcRenderer.send('open-new-window', IP, Port, PW, Link)
+  slideWindow: (IP, Port, PW, Link) => ipcRenderer.send('open-slide-window', IP, Port, PW, Link),
+  getSourceId: () => ipcRenderer.send('get-source')
 })

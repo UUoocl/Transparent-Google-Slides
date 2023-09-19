@@ -1,8 +1,15 @@
+/* Transparent Google Slides player 
+2023 by uuoocl🪵
+MIT license
+An app to play Google Slides with a tranparent background
+*/
+
+
 // Modules to control application life and create native browser window
-const { app, BrowserWindow, ipcMain  } = require('electron')
+const { app, BrowserWindow, ipcMain} = require('electron')
 const path = require('path')
 
-let nW;
+let slidesWindow;
 
 var websocketIP, websocketPort, websocketPassword;
  
@@ -29,16 +36,12 @@ ipcMain.on('wsConnect-Port', (event) => {
 
 ipcMain.on('wsConnect-PW', (event) => {
   console.log("sending websocket details to new window") 
+  speakerViewWindow = event.sender;
   event.returnValue = websocketPassword
 })
 
-ipcMain.on('appPath', (event) => {
-  console.log("sending appPath to new window") 
-  event.returnValue = __dirname
-})
-
-  ipcMain.on('open-new-window', (event, IP, Port, PW, Link) => {
-    nW = new BrowserWindow({
+  ipcMain.on('open-slide-window', (event, IP, Port, PW, Link) => {
+    slidesWindow = new BrowserWindow({
       width: 1280,
       height: 720,
       frame: false,
@@ -56,9 +59,9 @@ ipcMain.on('appPath', (event) => {
       websocketPassword = PW;
       mainLink = Link;
 
-      nW.loadURL(Link);      
-      //nW.webContents.openDevTools()
-      nW.webContents.setWindowOpenHandler(({ event,url }) => {
+      slidesWindow.loadURL(Link);      
+      //slidesWindow.webContents.openDevTools()
+      slidesWindow.webContents.setWindowOpenHandler(({ event,url }) => {
         console.log(event)
         if (true) {
           return {
@@ -69,25 +72,22 @@ ipcMain.on('appPath', (event) => {
               fullscreenable: false,
               backgroundColor: 'white',
               webPreferences: {
-                preload: path.join(__dirname,'popup-preload.js')
+                preload: path.join(__dirname,'slides-popup-preload.js')
               }
             }
           }
         }
         return { action: 'deny' }
       })
+        console.log("sending appPath to new window") 
   })
-
-  // and load the index.html of the app.
+ 
+   // and load the index.html of the app.
   mainWindow.loadFile('index.html')
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()
 }
-
-
-
-
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.

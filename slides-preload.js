@@ -4,7 +4,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
 if (window.trustedTypes && window.trustedTypes.createPolicy) {
   window.trustedTypes.createPolicy('default', {
-    createHTML: (string) => string
+    createHTML: (string) => string,
+    createScriptURL: string => string, // warning: this is unsafe!
+    createScript: string => string // warning: this is unsafe!
   });
 }
 

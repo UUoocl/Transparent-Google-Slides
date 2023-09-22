@@ -24,6 +24,9 @@ Transparent Google Slides can recieve the following from messages: Next, Previou
 
 It also uses OBS WebSockets to change scenes in OBS based on the slide notes.  
 
+**Camera background**
+Use a camera as a video background to the transparent slides.  Combine this feature with Zoom screen sharing to make a creative presentations. 
+
 ## Using this app
 
 ### Set the Slides background color

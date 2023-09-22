@@ -11,7 +11,7 @@ const path = require('path')
 
 let slidesWindow;
 
-var websocketIP, websocketPort, websocketPassword;
+var websocketIP, websocketPort, websocketPassword, winCamera;
  
  async function createWindow () {
   // Create the browser window.
@@ -40,11 +40,18 @@ ipcMain.on('wsConnect-PW', (event) => {
   event.returnValue = websocketPassword
 })
 
+ipcMain.on('camera-ID', (event) => {
+    console.log("sending camera ID to camera window") 
+    event.returnValue = winCamera;
+})
+
+
   ipcMain.on('open-slide-window', (event, IP, Port, PW, Link) => {
     slidesWindow = new BrowserWindow({
-      width: 1280,
-      height: 720,
+      width: 1919,
+      height: 1079,
       frame: false,
+      movable: false,
       titleBarOverlay: false,
       backgroundThrottling: false,
       transparent: true,
@@ -82,6 +89,25 @@ ipcMain.on('wsConnect-PW', (event) => {
         console.log("sending appPath to new window") 
   })
  
+ ipcMain.on('open-camera-window', (event, cameraId) => {
+   console.log(`camera ID = ${cameraId}`)
+    cameraWindow = new BrowserWindow({
+      width: 1920,
+      height: 1080,
+      frame: false,
+      titleBarOverlay: false,
+      backgroundThrottling: false,
+      transparent: true,
+      titleBarStyle: 'customButtonsOnHover',
+      webPreferences: {
+        preload: path.join(__dirname, 'camera-preload.js')
+        }
+      })
+  winCamera = cameraId;
+  cameraWindow.loadFile('camera.html');    
+})
+
+
    // and load the index.html of the app.
   mainWindow.loadFile('index.html')
 
@@ -108,4 +134,3 @@ app.whenReady().then(() => {
 app.on('window-all-closed', function () {
   if (process.platform !== 'darwin') app.quit()
 })
-

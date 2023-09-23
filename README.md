@@ -29,6 +29,24 @@ Use a camera as a video background to the transparent slides.  Combine this feat
 
 ## Using this app
 
+### Opening the app
+1. Download the [release for your Operating System](https://github.com/UUoocl/Transparent-Google-Slides/releases).
+2. Extract the .ZIP file to a location of your choice.
+3. Run the app executable file (.exe or .app for windows or MacOS respectively) 
+#### Windows security warning
+  Windows may prevent this app from running because it is "unrecoginzed".  Click the "More Info" link, then click "run anyway".
+  ![image](https://github.com/UUoocl/Transparent-Google-Slides/assets/99063397/f3eaf79a-fbd6-413d-b2ee-760fdd2a548f)
+
+#### MacOS security warning
+  MacOS may prevent the app from running because it is "damaged".  
+![image](https://github.com/UUoocl/Transparent-Google-Slides/assets/99063397/1bb66bcb-c689-4da8-bb2e-d3c1b9ee2b20)
+
+In the Finder, navigate to the folder containing the Transparent-Google-Slides app. 
+Press "**Control" + click** on the folder, then click "New Terminal at Folder".  
+In the Terminal type "**xattr -cr transparent-google-slides-0-0-3.app**" to remove the security warnings for this app. Now the app should run.  
+
+For example, if the Transparent-Google-Slides app is in the "Downloads" folder the terminal should look like "**userName@dhcp-##-##-####-### Downloads % xattr -cr transparent-google-slides-0-0-3.app**"
+
 ### Set the Slides background color
 
 In Google Slides set the background color to #ABCDEF.  The script looks for the color code #ABCDEF when removing the background. 

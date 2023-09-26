@@ -4,6 +4,7 @@ var windowId;
 contextBridge.exposeInMainWorld('electronAPI', {
   slideWindow: (IP, Port, PW, Link) => ipcRenderer.send('open-slide-window', IP, Port, PW, Link),
   cameraWindow: (CameraID) => ipcRenderer.send('open-camera-window', CameraID),
+  poseWindow: () => ipcRenderer.send('open-pose-window'),
   getCameraId: () => ipcRenderer.send('get-cameras')
 })
 

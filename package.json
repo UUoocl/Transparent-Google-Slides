@@ -1,15 +1,17 @@
 {
-  "name": "Google-Slides",
-  "productName": "Google-Slides",
+  "name": "near-punishment-crush-o030p",
+  "productName": "near-punishment-crush-o030p",
   "description": "My Electron application description",
   "keywords": [],
   "main": "./main.js",
-  "version": "0.0.3",
+  "version": "1.0.0",
   "author": "UUoocl",
   "scripts": {
     "start": "electron ."
   },
-  "dependencies": {},
+  "dependencies": {
+    "@mediapipe/tasks-vision": "0.10.0"
+  },
   "devDependencies": {
     "electron": "26.0.0"
   }

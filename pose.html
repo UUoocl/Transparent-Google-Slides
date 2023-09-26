@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+    <link href="./style.css" rel="stylesheet">
+
+  
+   <!--  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision/vision_bundle.js"
+    crossorigin="anonymous"></script>     -->
+    <title>MediaPipe Pose</title>
+  </head>
+  <body>
+<body>
+  <section id="demos" class="invisible">
+    <div class="detectOnClick">
+    <div id="liveView" class="videoView">
+      <button id="webcamButton" class="mdc-button mdc-button--raised">
+        <span class="mdc-button__ripple"></span>
+        <span class="mdc-button__label">ENABLE WEBCAM</span>
+      </button>
+      <div style="position: relative;">
+        <video id="webcam" style="width: 1280px; height: 720px; position: abso" autoplay playsinline></video>
+        <canvas class="output_canvas" id="output_canvas" width="1280" height="720" style="position: absolute; left: 0px; top: 0px;"></canvas>
+      </div>
+    </div>
+  </section>
+
+    <!-- You can also require other files to run in this process -->
+    <!-- <script src="./node_modules/@mediapipe/tasks-vision/vision_bundle.js" type="module"></script> -->
+    <script type="module">
+import { PoseLandmarker, FilesetResolver, DrawingUtils } from "./node_modules/@mediapipe/tasks-vision/vision_bundle.js";
+const demosSection = document.getElementById("demos");
+let poseLandmarker = undefined;
+let runningMode = "IMAGE";
+let enableWebcamButton;
+let webcamRunning = false;
+const videoHeight = "360px";
+const videoWidth = "640px";
+var nextControl = "off";
+var previousControl = "off";
+// Before we can use PoseLandmarker class we must wait for it to finish
+// loading. Machine Learning models can be large and take a moment to
+// get everything needed to run.
+const createPoseLandmarker = async () => {
+    const vision = await FilesetResolver.forVisionTasks("./node_modules/@mediapipe/tasks-vision/wasm");
+    poseLandmarker = await PoseLandmarker.createFromOptions(vision, {
+        baseOptions: {
+            modelAssetPath: `https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/1/pose_landmarker_lite.task`,
+            delegate: "GPU"
+        },
+        runningMode: runningMode,
+        numPoses: 1
+    });
+    demosSection.classList.remove("invisible");
+};
+createPoseLandmarker();
+/********************************************************************
+// Demo 2: Continuously grab image from webcam stream and detect it.
+********************************************************************/
+const video = document.getElementById("webcam");
+const canvasElement = document.getElementById("output_canvas");
+const canvasCtx = canvasElement.getContext("2d");
+const drawingUtils = new DrawingUtils(canvasCtx);
+// Check if webcam access is supported.
+const hasGetUserMedia = () => { var _a; return !!((_a = navigator.mediaDevices) === null || _a === void 0 ? void 0 : _a.getUserMedia); };
+// If webcam supported, add event listener to button for when user
+// wants to activate it.
+if (hasGetUserMedia()) {
+    enableWebcamButton = document.getElementById("webcamButton");
+    enableWebcamButton.addEventListener("click", enableCam);
+}
+else {
+    console.warn("getUserMedia() is not supported by your browser");
+}
+// Enable the live webcam view and start detection.
+function enableCam(event) {
+    if (!poseLandmarker) {
+        console.log("Wait! poseLandmaker not loaded yet.");
+        return;
+    }
+    if (webcamRunning === true) {
+        webcamRunning = false;
+        enableWebcamButton.innerText = "ENABLE PREDICTIONS";
+    }
+    else {
+        webcamRunning = true;
+        enableWebcamButton.innerText = "DISABLE PREDICTIONS";
+    }
+    // getUsermedia parameters.
+    const constraints = {
+        video: true
+    };
+    // Activate the webcam stream.
+    navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
+        video.srcObject = stream;
+        video.addEventListener("loadeddata", predictWebcam);
+    });
+}
+let lastVideoTime = -1;
+async function predictWebcam() {
+    canvasElement.style.height = videoHeight;
+    video.style.height = videoHeight;
+    canvasElement.style.width = videoWidth;
+    video.style.width = videoWidth;
+    // Now let's start detecting the stream.
+    if (runningMode === "IMAGE") {
+        runningMode = "VIDEO";
+        await poseLandmarker.setOptions({ runningMode: "VIDEO" });
+    }
+    let startTimeMs = performance.now();
+    if (lastVideoTime !== video.currentTime) {
+        lastVideoTime = video.currentTime;
+        poseLandmarker.detectForVideo(video, startTimeMs, (result) => {
+            canvasCtx.save();
+            canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+            for (const landmark of result.landmarks) {
+                if(landmark[16].y<landmark[0].y && nextControl == "off" && previousControl == "off"){
+                    window.electronAPI.changeSlide("Next");
+                    nextControl = "on";
+                    console.log(landmark[16].y," Right ", nextControl)
+                }
+                if(landmark[15].y<landmark[0].y && nextControl == "off" && previousControl == "off"){
+                    window.electronAPI.changeSlide("Previous");
+                    previousControl = "on";
+                    console.log(landmark[15].y," Left ", previousControl)
+                }
+                if(landmark[15].y > landmark[0].y){
+                    previousControl = "off";
+                }
+                if(landmark[16].y > landmark[0].y){
+                    nextControl = "off";
+                }
+
+
+                drawingUtils.drawLandmarks(landmark, {
+                    radius: (data) => DrawingUtils.lerp(data.from.z, -0.15, 0.1, 5, 1)
+                });
+                drawingUtils.drawConnectors(landmark, PoseLandmarker.POSE_CONNECTIONS);
+            }
+            canvasCtx.restore();
+        });
+    }
+    // Call this function again to keep predicting when the browser is ready.
+    if (webcamRunning === true) {
+        window.requestAnimationFrame(predictWebcam);
+    }
+}
+    </script>
+  </body>
+</html>

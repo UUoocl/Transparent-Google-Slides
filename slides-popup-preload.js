@@ -1,4 +1,4 @@
-const { contextBridge, ipcRenderer } = require('electron');
+const {ipcRenderer } = require('electron');
 
 const websocketIP = ipcRenderer.sendSync('wsConnect-IP');
 const websocketPort = ipcRenderer.sendSync('wsConnect-Port');
@@ -17,12 +17,10 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 }
 
+  setTimeout(obsConnect, 2000);
 
-setTimeout(obsConnect, 2000);
+  setTimeout(setup, 200);
 
-setTimeout(setup, 200);
-
-//obsConnect;  
 })
 
 function setup() {
@@ -126,19 +124,22 @@ function listenforOBSchange(){
       let elem;
       switch (event.eventData.message) {
         case "Next":
-          console.log("Right event")
+          nextSlide();
+/*           console.log("Right event")
           elem = document.querySelectorAll('div[class="punch-viewer-speakernotes-page-next"]')[0]
-          elem.click();
+          elem.click(); */
           /* window.focus()
           keySim("39");
           //setTimeout(keySim("78"),1000);
           window.opener.focus(); */
           break;
         case "Previous":
-          console.log("Left event")
+          previousSlide();
+         
+         /*  console.log("Left event")
           elem = document.querySelectorAll('div[class="punch-viewer-speakernotes-page-previous"]')[0]
           elem.click();
-    
+     */
           //setTimeout(keySim("78"),1000);
           //window.opener.focus();
           break;
@@ -161,6 +162,19 @@ function listenforOBSchange(){
          
       }
   })
+}
+
+
+function nextSlide(){
+  console.log("Right event")
+  elem = document.querySelectorAll('div[class="punch-viewer-speakernotes-page-next"]')[0]
+  elem.click();
+}
+
+function previousSlide(){
+  console.log("Left event")
+  elem = document.querySelectorAll('div[class="punch-viewer-speakernotes-page-previous"]')[0]
+  elem.click();
 }
 
 function notesZoomIn(){

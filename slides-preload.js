@@ -14,6 +14,16 @@ if (window.trustedTypes && window.trustedTypes.createPolicy) {
   setInterval(deleteBG, 500);
   
   keySim("83");
+
+    ipcRenderer.on('next-slide', (_event) => {
+      console.log("next slide message received")
+     keySim(39);
+  })
+
+   ipcRenderer.on('previous-slide',  (_event) => {
+     console.log("next slide message received")
+    keySim(37);
+  })
 })
 
 function keySim(k){
@@ -55,4 +65,3 @@ function deleteBG() {
           elem.remove();
         }
     }
-

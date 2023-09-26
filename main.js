@@ -45,6 +45,16 @@ ipcMain.on('camera-ID', (event) => {
     event.returnValue = winCamera;
 })
 
+ipcMain.on('change-slide', (event, Direction) => {
+    if(Direction == "Next"){
+      console.log("sending next slide message to slide window") 
+      slidesWindow.webContents.send('next-slide');
+    }else{
+      console.log("sending previous slide message to slide window") 
+      slidesWindow.webContents.send('previous-slide');
+    }
+})
+
 
   ipcMain.on('open-slide-window', (event, IP, Port, PW, Link) => {
     slidesWindow = new BrowserWindow({
@@ -66,7 +76,8 @@ ipcMain.on('camera-ID', (event) => {
       websocketPassword = PW;
       mainLink = Link;
 
-      slidesWindow.loadURL(Link);      
+      slidesWindow.loadURL(Link);    
+
       //slidesWindow.webContents.openDevTools()
       slidesWindow.webContents.setWindowOpenHandler(({ event,url }) => {
         console.log(event)
@@ -105,6 +116,24 @@ ipcMain.on('camera-ID', (event) => {
       })
   winCamera = cameraId;
   cameraWindow.loadFile('camera.html');    
+})
+
+ ipcMain.on('open-pose-window', (event) => {
+   poseWindow = new BrowserWindow({
+      width: 650,
+      height: 460,
+      x: 0,
+      y: 0,
+      frame: true,
+      titleBarOverlay: false,
+      backgroundThrottling: false,
+      transparent: true,
+      titleBarStyle: 'customButtonsOnHover',
+      webPreferences: {
+        preload: path.join(__dirname, 'pose-preload.js')
+        }
+      })
+  poseWindow.loadFile('pose.html');    
 })
 
 

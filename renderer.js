@@ -32,6 +32,11 @@ function newWindow() {
   const Link = document.getElementById('Link').value;
   const OpenCamera = document.getElementById('cameraWindow');
   console.log("OpenCamera",OpenCamera.checked)
+  
+  const OpenPose = document.getElementById('poseWindow');
+  console.log("OpenPose", OpenPose.checked)
+
+
   var e = document.getElementById("cameras");
   console.log(e.value)
   console.log(e.options[e.selectedIndex].text)
@@ -42,5 +47,10 @@ function newWindow() {
   if(OpenCamera.checked){ 
     window.electronAPI.cameraWindow(CameraID);
   }
+
   window.electronAPI.slideWindow(IP, Port, PW, Link);
+  
+  if(OpenPose.checked){ 
+    window.electronAPI.poseWindow();
+  }
 }

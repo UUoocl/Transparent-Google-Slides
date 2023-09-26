@@ -3,6 +3,10 @@ A javaScript app to play Google Slides with a transparent background and connect
 
 This is an Electron Fiddle app that removes the background from a Published Google Slide show.  
 ## New features
+**Control slides by raising a hand**
+Raise your right hand to go to the next slide. Raise your left hand to go to the previous slide. 
+The [MediaPipe](https://developers.google.com/mediapipe) machine learning javascript library tracks the presenters pose. 
+
  **Teleprompter slide notes**. Your slide notes scroll, like a teleprompter.  
 ![image](https://github.com/UUoocl/Transparent-Google-Slides/assets/99063397/49959c88-9bd9-4865-8de3-d101856ee812)
 

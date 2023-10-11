@@ -42,9 +42,10 @@ Use a camera as a video background to the transparent slides.  Combine this feat
   ![image](https://github.com/UUoocl/Transparent-Google-Slides/assets/99063397/f3eaf79a-fbd6-413d-b2ee-760fdd2a548f)
 
 #### MacOS security warning
-  MacOS may prevent the app from running because it is "damaged".  
+  Because this app is not "signed", MacOS may prevent the app from running. An error will appear that says the app is "damaged".    
 ![image](https://github.com/UUoocl/Transparent-Google-Slides/assets/99063397/1bb66bcb-c689-4da8-bb2e-d3c1b9ee2b20)
 
+To run an app that is not signed, follow these steps. 
 In the Finder, navigate to the folder containing the Transparent-Google-Slides app. 
 Press "**Control" + click** on the folder, then click "New Terminal at Folder".  
 In the Terminal type "**xattr -cr transparent-google-slides-0-0-3.app**" to remove the security warnings for this app. Now the app should run.  

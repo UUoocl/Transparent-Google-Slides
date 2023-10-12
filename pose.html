@@ -3,11 +3,13 @@
   <head>
     <meta charset="UTF-8">
     <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+    <!-- https://codepen.io/mediapipe-preview/pen/abRLMxN -->
     <link href="./style.css" rel="stylesheet">
 
   
    <!--  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision/vision_bundle.js"
     crossorigin="anonymous"></script>     -->
+
     <title>MediaPipe Pose</title>
   </head>
   <body>
@@ -69,12 +71,16 @@ const hasGetUserMedia = () => { var _a; return !!((_a = navigator.mediaDevices) 
 if (hasGetUserMedia()) {
     enableWebcamButton = document.getElementById("webcamButton");
     enableWebcamButton.addEventListener("click", enableCam);
+    enableCam
 }
 else {
     console.warn("getUserMedia() is not supported by your browser");
 }
 // Enable the live webcam view and start detection.
 function enableCam(event) {
+    const cameraIDelement = document.getElementById("cameraID");
+    const cameraID = cameraIDelement.getAttribute("data-camera-id");
+
     if (!poseLandmarker) {
         console.log("Wait! poseLandmaker not loaded yet.");
         return;
@@ -89,7 +95,10 @@ function enableCam(event) {
     }
     // getUsermedia parameters.
     const constraints = {
-        video: true
+        video: {
+            deviceId: `${cameraID}`,
+            aspectRatio: 1.7777777778, 
+        },
     };
     // Activate the webcam stream.
     navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
@@ -115,11 +124,13 @@ async function predictWebcam() {
             canvasCtx.save();
             canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
             for (const landmark of result.landmarks) {
+                //when the right wrist is above the nose, send next slide command
                 if(landmark[16].y<landmark[0].y && nextControl == "off" && previousControl == "off"){
                     window.electronAPI.changeSlide("Next");
                     nextControl = "on";
                     console.log(landmark[16].y," Right ", nextControl)
                 }
+                //when the left wrist is above the nose, send previous slide command
                 if(landmark[15].y<landmark[0].y && nextControl == "off" && previousControl == "off"){
                     window.electronAPI.changeSlide("Previous");
                     previousControl = "on";
@@ -131,7 +142,10 @@ async function predictWebcam() {
                 if(landmark[16].y > landmark[0].y){
                     nextControl = "off";
                 }
-
+                //send the right wrist position
+                const WristPoint = {r_x: landmark[16].x, r_y: landmark[16].y, l_x: landmark[15].x, l_y: landmark[15].y, "nextControl": nextControl,  "previousControl": previousControl}; 
+                console.log(typeof WristPoint)
+                window.electronAPI.setWristPositions(WristPoint);
 
                 drawingUtils.drawLandmarks(landmark, {
                     radius: (data) => DrawingUtils.lerp(data.from.z, -0.15, 0.1, 5, 1)

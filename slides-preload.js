@@ -21,7 +21,7 @@ if (window.trustedTypes && window.trustedTypes.createPolicy) {
   })
 
    ipcRenderer.on('previous-slide',  (_event) => {
-     console.log("next slide message received")
+     console.log("previous slide message received")
     keySim(37);
   })
 })

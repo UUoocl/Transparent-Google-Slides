@@ -9,9 +9,12 @@ An app to play Google Slides with a tranparent background
 const { app, BrowserWindow, ipcMain} = require('electron')
 const path = require('path')
 
-let slidesWindow;
+let slidesWindow,P5poseWindow;
 
 var websocketIP, websocketPort, websocketPassword, winCamera;
+
+//Variables for P5 Overlay
+var r_x, r_y, l_x, l_y, previousControl, nextControl;
  
  async function createWindow () {
   // Create the browser window.
@@ -24,6 +27,7 @@ var websocketIP, websocketPort, websocketPassword, winCamera;
     }
   })
 
+//IPC APIs
 ipcMain.on('wsConnect-IP', (event) => {
   console.log("sending websocket details to new window") 
   event.returnValue = websocketIP
@@ -45,21 +49,39 @@ ipcMain.on('camera-ID', (event) => {
     event.returnValue = winCamera;
 })
 
+
 ipcMain.on('change-slide', (event, Direction) => {
     if(Direction == "Next"){
-      console.log("sending next slide message to slide window") 
-      slidesWindow.webContents.send('next-slide');
+        console.log("sending next slide message to slide window") 
+        slidesWindow.webContents.send('next-slide');
     }else{
-      console.log("sending previous slide message to slide window") 
-      slidesWindow.webContents.send('previous-slide');
+        console.log("sending previous slide message to slide window") 
+        slidesWindow.webContents.send('previous-slide');
     }
 })
 
 
+ipcMain.on('set-wrist-positions', (event, Point) => {
+    console.log("Point Sent ", typeof Point, Point)
+    r_x = Point.r_x * 1920;
+    r_y = Point.r_y * 1080;
+    l_x = Point.l_x * 1920;
+    l_y = Point.l_y * 1080;    
+    nextControl = Point.nextControl;
+    previousControl = Point.previousControl;
+})
+
+ipcMain.on('get-wrist-positions', (event) => {
+    console.log("Point Saved ", r_x, r_y)
+    const result = {"r_x": r_x, "r_y": r_y, "l_x": l_x, "l_y": l_y, "nextControl": nextControl,  "previousControl": previousControl};
+    console.log(typeof result)
+    event.returnValue = result;
+})
+
   ipcMain.on('open-slide-window', (event, IP, Port, PW, Link) => {
     slidesWindow = new BrowserWindow({
-      width: 1919,
-      height: 1079,
+      width: 1915,
+      height: 1075,
       frame: false,
       movable: false,
       titleBarOverlay: false,
@@ -116,6 +138,22 @@ ipcMain.on('change-slide', (event, Direction) => {
       })
   winCamera = cameraId;
   cameraWindow.loadFile('camera.html');    
+
+  P5poseWindow = new BrowserWindow({
+    width: 1918,
+    height: 1078,
+    x: 0,
+    y: 0,
+    frame: false,
+    titleBarOverlay: false,
+    backgroundThrottling: false,
+    transparent: true,
+    titleBarStyle: 'customButtonsOnHover',
+    webPreferences: {
+      preload: path.join(__dirname, 'P5-pose-preload.js')
+      }
+    })
+    P5poseWindow.loadFile('P5_pose.html');  
 })
 
  ipcMain.on('open-pose-window', (event) => {
@@ -134,6 +172,7 @@ ipcMain.on('change-slide', (event, Direction) => {
         }
       })
   poseWindow.loadFile('pose.html');    
+
 })
 
 

@@ -1,6 +1,6 @@
 {
   "name": "slide-studio",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "An app for playing slides and sending web socket messages",
   "main": "main.js",
   "scripts": {

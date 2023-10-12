@@ -1,6 +1,6 @@
 {
   "name": "slide-studio",
-  "version": "0.0.6",
+  "version": "0.0.5",
   "description": "An app for playing slides and sending web socket messages",
   "main": "main.js",
   "scripts": {
@@ -18,7 +18,7 @@
     "@electron-forge/maker-squirrel": "^6.4.2",
     "@electron-forge/maker-zip": "^6.4.2",
     "@electron-forge/plugin-auto-unpack-natives": "^6.4.2",
-    "electron": "^26.2.4"
+    "electron": "^26.4.0"
   },
   "dependencies": {
     "@mediapipe/tasks-vision": "^0.10.0",

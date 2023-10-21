@@ -71,7 +71,7 @@ const hasGetUserMedia = () => { var _a; return !!((_a = navigator.mediaDevices) 
 if (hasGetUserMedia()) {
     enableWebcamButton = document.getElementById("webcamButton");
     enableWebcamButton.addEventListener("click", enableCam);
-    enableCam
+    setTimeout(enableCam, 1000);
 }
 else {
     console.warn("getUserMedia() is not supported by your browser");
@@ -109,9 +109,11 @@ function enableCam(event) {
 let lastVideoTime = -1;
 async function predictWebcam() {
     canvasElement.style.height = videoHeight;
-    video.style.height = videoHeight;
+    video.style.height = 0;
     canvasElement.style.width = videoWidth;
-    video.style.width = videoWidth;
+    video.style.width = 0;
+    video.hidden;
+    
     // Now let's start detecting the stream.
     if (runningMode === "IMAGE") {
         runningMode = "VIDEO";

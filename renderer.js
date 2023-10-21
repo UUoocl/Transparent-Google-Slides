@@ -1,4 +1,7 @@
 const button = document.getElementById('SubmitButton');
+let moveOffScreenButton, movePrimaryScreenButton ;
+
+
 
 window.addEventListener('DOMContentLoaded', async() => {
   getCameras();
@@ -47,10 +50,41 @@ function newWindow() {
   if(OpenCamera.checked){ 
     window.electronAPI.cameraWindow(CameraID);
   }
-
-  window.electronAPI.slideWindow(IP, Port, PW, Link);
   
   if(OpenPose.checked){ 
+    console.log("opening Pose Window")
     window.electronAPI.poseWindow();
   }
+
+  window.electronAPI.slideWindow(IP, Port, PW, Link);
+
+  button.remove();
+  
+  const offScreenButton = document.createElement(`input`);
+  offScreenButton.setAttribute("type", "button");
+  offScreenButton.setAttribute("id", "offScreenButton");
+  offScreenButton.setAttribute("value", "move windows off screen");
+  window.document.body.appendChild(offScreenButton);
+  
+  moveOffScreenButton = document.getElementById('offScreenButton');
+  moveOffScreenButton.addEventListener("click", moveOffScreen);
+
+  const primaryScreenButton = document.createElement(`input`);
+  primaryScreenButton.setAttribute("type", "button");
+  primaryScreenButton.setAttribute("id", "primaryScreenButton");
+  primaryScreenButton.setAttribute("value", "move windows to primary screen");
+  window.document.body.appendChild(primaryScreenButton);
+  
+  movePrimaryScreenButton = document.getElementById('primaryScreenButton');
+  movePrimaryScreenButton.addEventListener("click", movePrimaryScreen);
+  
+
+}
+
+function moveOffScreen() {
+    window.electronAPI.moveWindowsOffScreen();
+}
+
+function movePrimaryScreen() {
+    window.electronAPI.moveWindowsToPrimaryScreen();
 }

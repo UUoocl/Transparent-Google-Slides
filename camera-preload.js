@@ -48,6 +48,4 @@ navigator.mediaDevices
       console.error(`getUserMedia error: ${error.name}`, error);
     }
   });
-
-
 })

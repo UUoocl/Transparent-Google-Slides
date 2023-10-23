@@ -1,6 +1,7 @@
 const { contextBridge, ipcRenderer } = require('electron');
 
 window.addEventListener('DOMContentLoaded', () => {
+    document.title = "Google Slides 1";   
 
 if (window.trustedTypes && window.trustedTypes.createPolicy) {
   window.trustedTypes.createPolicy('default', {

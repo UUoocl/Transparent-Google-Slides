@@ -8,7 +8,7 @@ var obs;
 var sceneInNotes, advSSmessage, notesScrollSpeed = 2, scaleAmount = 1, scrollPlay = true, resumeScrollSpeed, widthAmount;
 
 window.addEventListener('DOMContentLoaded', () => {
-
+    
   if (window.trustedTypes && window.trustedTypes.createPolicy) {
   window.trustedTypes.createPolicy('default', {
     createHTML: (string) => string,
@@ -24,6 +24,7 @@ window.addEventListener('DOMContentLoaded', () => {
 })
 
 function setup() {
+    document.title = "Presenter View 1";
     const slowScroll = document.createElement('div');
     
     slowScroll.setAttribute("id","ScrollSlowButton"); 

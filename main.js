@@ -9,7 +9,7 @@ An app to play Google Slides with a tranparent background
 const { app, BrowserWindow, ipcMain} = require('electron')
 const path = require('path')
 
-let slidesWindow, poseWindow, P5poseWindow, cameraWindow, segmentationWindow;
+let mainWindow, slidesWindow, poseWindow, P5poseWindow, cameraWindow, segmentationWindow;
 
 var websocketIP, websocketPort, websocketPassword, winCamera;
 
@@ -19,7 +19,7 @@ var r_x, r_y, l_x, l_y, previousControl, nextControl;
 //#region create main window
  async function createWindow () {
   // Create the browser window.
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 1280,
     height: 720,
     x: 0,
@@ -132,10 +132,10 @@ ipcMain.on('open-pose-window', (event) => {
       height: 460,
       x: -650,
       y: 0,
-      frame: true,
+      frame: false,
       titleBarOverlay: false,
       backgroundThrottling: false,
-      backgroundColor: `black`,
+      //backgroundColor: `black`,
       transparent: true,
       titleBarStyle: 'customButtonsOnHover',
       webPreferences: {
@@ -213,14 +213,18 @@ ipcMain.on('wsConnect-IP', (event) => {
   })
 
   ipcMain.on('move-windows-off-screen', (event) => {
+    //cascade the windows off screen
     cameraWindow.setPosition(-1920, 0);
     P5poseWindow.setPosition(-1920, 100);
     poseWindow.setPosition(-650,200);
     slidesWindow.setPosition(-1920, 300);
+    segmentationWindow.setPosition(-1920, 350);
     cameraWindow.focus();
     P5poseWindow.focus();
     poseWindow.focus();
     slidesWindow.focus();
+    segmentationWindow.focus();
+    mainWindow.focus();
 })
 
 ipcMain.on('move-windows-to-primary-screen', (event) => {
@@ -228,10 +232,13 @@ ipcMain.on('move-windows-to-primary-screen', (event) => {
     P5poseWindow.setPosition(-2,0);
     slidesWindow.setPosition(-1,0);
     poseWindow.setPosition(-650,0);
+    segmentationWindow.setPosition(-3, 0);
     cameraWindow.focus();
+    segmentationWindow.focus();
     P5poseWindow.focus();
     poseWindow.focus();
     slidesWindow.focus();
+    mainWindow.focus();
 })
 //#endregion
 

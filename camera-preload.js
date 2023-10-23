@@ -18,6 +18,8 @@ console.log("cameraID ", cameraID )
 const constraints = {
   audio: false,
   video: {
+    width: 1280, 
+    height: 720,
     deviceId: `${cameraID}`,
     aspectRatio: 1.7777777778, 
   },

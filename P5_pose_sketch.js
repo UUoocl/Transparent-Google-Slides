@@ -7,7 +7,7 @@
 let wristL, wristR, dataElement;
 
 function setup() {
-  createCanvas(1915, 1075);
+  createCanvas(1920, 1080);
   
   wristL = new Particle(0, 0, "left");
   wristR = new Particle(0, 0, "right");

@@ -37,6 +37,7 @@ function newWindow() {
   console.log("OpenCamera",OpenCamera.checked)
   
   const OpenPose = document.getElementById('poseWindow');
+  const OpenSegmentation = document.getElementById('segmentationWindow');
   console.log("OpenPose", OpenPose.checked)
 
 
@@ -54,6 +55,11 @@ function newWindow() {
   if(OpenPose.checked){ 
     console.log("opening Pose Window")
     window.electronAPI.poseWindow();
+  }
+
+  if(OpenSegmentation.checked){ 
+    console.log("opening Segmentation Window")
+    window.electronAPI.segmentationWindow();
   }
 
   window.electronAPI.slideWindow(IP, Port, PW, Link);

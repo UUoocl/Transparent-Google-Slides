@@ -9,7 +9,7 @@ An app to play Google Slides with a tranparent background
 const { app, BrowserWindow, ipcMain} = require('electron')
 const path = require('path')
 
-let slidesWindow, poseWindow, P5poseWindow, cameraWindow;
+let slidesWindow, poseWindow, P5poseWindow, cameraWindow, segmentationWindow;
 
 var websocketIP, websocketPort, websocketPassword, winCamera;
 
@@ -144,6 +144,24 @@ ipcMain.on('open-pose-window', (event) => {
       })
   poseWindow.loadFile('pose.html');    
 })
+
+ipcMain.on('open-segmentation-window', (event) => {
+    segmentationWindow = new BrowserWindow({
+      width: 1920,
+      height: 1080,
+      x: -3,
+      y: 0,
+      frame: false,
+      titleBarOverlay: false,
+      backgroundThrottling: false,
+      transparent: true,
+      titleBarStyle: 'customButtonsOnHover',
+      webPreferences: {
+        preload: path.join(__dirname, 'segmentation-preload.js')
+        }
+      })
+      segmentationWindow.loadFile('segmentation.html');  
+  })
 //#endregion
 
 

@@ -65,6 +65,7 @@ const canvasElement = document.getElementById("output_canvas");
 const canvasCtx = canvasElement.getContext("2d");
 const drawingUtils = new DrawingUtils(canvasCtx);
 // Check if webcam access is supported.
+
 const hasGetUserMedia = () => { var _a; return !!((_a = navigator.mediaDevices) === null || _a === void 0 ? void 0 : _a.getUserMedia); };
 // If webcam supported, add event listener to button for when user
 // wants to activate it.

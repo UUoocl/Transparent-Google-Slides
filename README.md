@@ -1,7 +1,7 @@
 # Transparent-Google-Slides
 A javaScript app to play Google Slides with a transparent background and connect to OBS to control scene changes. 
 
-This is an Electron Fiddle app that removes the background from a Published Google Slide show.  
+This is an Electron app that removes the background from a Published Google Slide show.  
 ## New features
 **Control slides by raising a hand**
 Raise your right hand to go to the next slide. Raise your left hand to go to the previous slide. 
@@ -68,7 +68,7 @@ To Publish your slides, click 'file --> Share --> Publish to web'
 
 ### Turn on WebSocket Server in OBS
 
-### [Download this app](https://github.com/UUoocl/Transparent-Google-Slides/releases/tag/0.0.1-alpha)
+### [Download this app](https://github.com/UUoocl/Transparent-Google-Slides/releases)
 
 
 
